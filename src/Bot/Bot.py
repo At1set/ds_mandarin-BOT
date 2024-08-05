@@ -34,6 +34,26 @@ async def ping_error(ctx, error):
     raise error  # Передаем обработку других ошибок вышестоящим обработчикам
 
 
+async def get_config(data, websocket):
+  id, data = data["id"], data["data"]
+  status = "ok"
+  options = None
+  try:
+    with open("./src/options.json", "r") as file:
+      options = json.load(file)[f"{id}"]
+  except Exception as err:
+    print(err)
+    status = "Options don't exists error"
+  finally:
+    await websocket.send(json.dumps({
+      "id": id,
+      "data": {
+        "status": status,
+        "message": options if status == "ok" else "Бот не смог прочитать настройки!",
+      }
+    }))
+
+
 async def update_config(data, websocket):
   id, data = data["id"], data["data"]
   print("Bot is updating config's data")

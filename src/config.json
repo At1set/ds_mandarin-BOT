@@ -1,8 +1,4 @@
 {
-  "Observer": {
-    "current_directory": "./src/",
-    "wathingFile": "./src/options.json"
-  },
   "BackendApi": {
     "port": 8000,
     "updateConfigEndpoint": "/api/updateConfig/"
