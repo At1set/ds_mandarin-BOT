@@ -1,7 +1,7 @@
 import websockets
 import asyncio
 import json
-from Bot import update_config, get_config
+from Bot import update_config, get_config, getUserGuilds
 
 async def startWsConnection(limit=3):
   if (limit <= 0): raise Exception("Превышено максимальное колличество переподключений к серверу!")
@@ -14,11 +14,12 @@ async def startWsConnection(limit=3):
       while True: # Получение новых настроек для серверов
         response = await websocket.recv()
         response = json.loads(response)
-        print(response["action"])
         if response["action"] == "update_config":
           await update_config(response, websocket)
         elif response["action"] == "get_config":
           await get_config(response, websocket)
+        elif response["action"] == "getUserGuilds":
+          await getUserGuilds(response, websocket)
   except Exception as err:
     print(err)
     print("Bot lost connection with server! Restarting the connection...")

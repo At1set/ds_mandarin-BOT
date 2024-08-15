@@ -39,5 +39,15 @@ async def main():
     print("Бот остановил свою работу!")
 
 
+class StartingMode():
+  Developing = 1
+  Production = 2
+
+
+start_mode = StartingMode.Production
+
+
 if __name__ == "__main__":
-  asyncio.run(main())
+  if (start_mode == StartingMode.Production): asyncio.run(main())
+  elif (start_mode == StartingMode.Developing) : asyncio.run(bot.start(TOKEN))
+  
