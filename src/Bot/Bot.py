@@ -22,21 +22,43 @@ def is_allowed_chatId():
   return commands.check(predicate)
 
 
+async def printRoleMessage():
+  channel = bot.get_channel(1251883923190059130)
+  message = await channel.send("При добавлении предустановленных реакций на это сообщение, я выдам вам соответствующие роли!")
+  reactions = "0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟".split()
+  for reaction in reactions:
+    await message.add_reaction(reaction)
+
+  roles_message = "============ Получение ролей игр ============\n"
+  for i, role in enumerate(getRoles()):
+    roles_message += f"{i}) {role}\n"
+  await channel.send(roles_message)
+
+
+async def sendAllReactionRoles():
+  print("Начинаю выдавать роли по сообщению.")
+  channel = bot.get_channel(1251883923190059130)
+  message = await channel.fetch_message(1272518907319549962)
+  for reaction in message.reactions:
+    async for user in reaction.users():
+      if user.id == bot.user.id: continue
+      role = getRoleFromEmoji(reaction.emoji)
+      if role:
+        print(f"Выдана {role}, для {user.name}")
+        await user.add_roles(role)
+  print("Я закончил выдачу ролей!")
+
+
 @bot.event
 async def on_ready():
   print("Bot is started!")
-  channel = bot.get_channel(1251883923190059130)
-  # await channel.send('При добавлении предустановленных реакций на это сообщение, я выдам вам соответствующие роли!')
-  # message = await channel.fetch_message(1272518907319549962)
-  # message = await channel.send("При добавлении предустановленных реакций на это сообщение, я выдам вам соответствующие роли!")
-  # reactions = "0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟".split()
-  # for reaction in reactions:
-  #   await message.add_reaction(reaction)
+  await sendAllReactionRoles()
 
-  # roles_message = "============ Получение ролей игр ============\n"
-  # for i, role in enumerate(getRoles()):
-  #   roles_message += f"{i}) {role}\n"
-  # await channel.send(roles_message)
+  # channel = bot.get_channel(1251883923190059130)
+  # message = await channel.fetch_message(1272518933555183656)
+  # await message.edit(content=message.content + "\n7) Minecraft")
+  
+  
 
 import sys
 
@@ -46,7 +68,7 @@ async def on_error(event, *args, **kwargs):
   print(sys.exc_info())
 
 def getRoles():
-  roles_id = [1251864962356215849, 1260145881705877536, 1197120086419447878, 1251864196237230090, 1251864798174646303, 1251878642879823984, 1251875809548046409]
+  roles_id = [1251864962356215849, 1260145881705877536, 1197120086419447878, 1251864196237230090, 1251864798174646303, 1251878642879823984, 1251875809548046409, 1275573808018751629]
   roles = []
   guild = bot.get_guild(761604207680946176)
   for role_id in roles_id:
@@ -54,7 +76,7 @@ def getRoles():
   return roles
 
 
-async def getRoleFromEmoji(emoji):
+def getRoleFromEmoji(emoji):
   reactions = "0️⃣ 1️⃣ 2️⃣ 3️⃣ 4️⃣ 5️⃣ 6️⃣ 7️⃣ 8️⃣ 9️⃣ 🔟".split()
   index = None
   try:
