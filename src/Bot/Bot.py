@@ -90,7 +90,7 @@ def getRoleFromEmoji(emoji):
 async def on_raw_reaction_add(payload : discord.RawReactionActionEvent):
   if bot.user.id == payload.user_id: return print("Бот реагирует")
   if payload.message_id == 1272518907319549962:
-    role = await getRoleFromEmoji(emoji=payload.emoji)
+    role = getRoleFromEmoji(emoji=payload.emoji)
     if not role: return print("Не удалось получить роль :(")
     print(f"Пользователь {payload.member.global_name} {payload.member.name} получил роль {role}!")
     await payload.member.add_roles(role)
@@ -101,7 +101,7 @@ async def on_raw_reaction_remove(payload : discord.RawReactionActionEvent):
   if bot.user.id == payload.user_id: return print("Бот реагирует")
   if payload.message_id == 1272518907319549962:
     member = bot.get_guild(payload.guild_id).get_member(payload.user_id)
-    role = await getRoleFromEmoji(emoji=payload.emoji)
+    role = getRoleFromEmoji(emoji=payload.emoji)
     if not role: return print("Не удалось получить роль :(")
     print(f"Пользователь {member.global_name} {member.name} убрал роль {role}!")
     await member.remove_roles(role)
