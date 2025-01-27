@@ -110,7 +110,7 @@ class OptionsStore():
     return result
   
   async def updateOptions(self, guild_id, module_name, options: object):
-    json_options = json.dumps(options)
+    json_options = json.dumps(options, ensure_ascii=False)
     query = f"""UPDATE guild_options SET {module_name} = '{json_options}' WHERE id = {guild_id};"""
     result = await self.__dataBase__.execute_query(query)
     if (not result["error"]): result["data"] = options

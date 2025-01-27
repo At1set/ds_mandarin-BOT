@@ -52,7 +52,7 @@ async def sendAllReactionRoles():
 @bot.event
 async def on_ready():
   print("Bot is started!")
-  await sendAllReactionRoles()
+  # await sendAllReactionRoles()
 
   # channel = bot.get_channel(1251883923190059130)
   # message = await channel.fetch_message(1272518933555183656)
@@ -157,6 +157,7 @@ async def get_config(data, websocket):
     print(err)
     status = "error"
   finally:
+    print(1)
     await websocket.send(json.dumps({
       "id": id,
       "data": {
@@ -217,3 +218,18 @@ async def getUserGuilds(data, websocket):
         "message": message if status != "error" else "Боту не удалось прочитать/инициализировать гильдии пользователя!",
       }
     }))
+
+import asyncio
+
+@bot.event
+async def on_message(message : discord.Message):
+  if message.author == bot.user:
+    return
+  options = await dataBase.optionsStore.getOptions(761604207680946176, "auto_moderation")
+  banwords = options["data"]["banwords"]
+  for banword in banwords:
+    if banword in message.content:
+      await message.delete()
+      message = await message.channel.send("Ваше сообщение я удалил НАХУЙ, т.к. в нем присуствует БАНворд!")
+      await asyncio.sleep(3)
+      await message.delete()
