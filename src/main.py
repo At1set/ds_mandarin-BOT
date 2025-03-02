@@ -40,14 +40,13 @@ async def main():
 
 
 class StartingMode():
-  Developing = 1
-  Production = 2
+  OnlyBot = 1
+  BotWithServer = 2
 
 
-start_mode = StartingMode.Developing
+start_mode = StartingMode.BotWithServer
 
 
 if __name__ == "__main__":
-  if (start_mode == StartingMode.Production): asyncio.run(main())
-  elif (start_mode == StartingMode.Developing) : asyncio.run(bot.start(TOKEN))
-  
+  if (start_mode == StartingMode.BotWithServer): asyncio.run(main())
+  elif (start_mode == StartingMode.OnlyBot) : asyncio.run(bot.start(TOKEN))
