@@ -44,7 +44,7 @@ class StartingMode():
   Production = 2
 
 
-start_mode = StartingMode.Developing
+start_mode = StartingMode.Production
 
 
 if __name__ == "__main__":

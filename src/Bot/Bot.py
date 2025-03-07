@@ -157,7 +157,6 @@ async def get_config(data, websocket):
     print(err)
     status = "error"
   finally:
-    print(1)
     await websocket.send(json.dumps({
       "id": id,
       "data": {

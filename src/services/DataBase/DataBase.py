@@ -74,7 +74,7 @@ class Guilds():
     query = f"""UPDATE guilds SET {module_name} = {value} WHERE id = (%s);"""
     return await self.__dataBase__.execute_query(query, params=[guild_id])
   
-  async def isModule(self, guild_id, module_name):
+  async def isModuleOn(self, guild_id, module_name):
     query = f"""SELECT {module_name} FROM guilds WHERE id = %s;"""
     result = await self.__dataBase__.execute_query(query, params=[guild_id], isNeedFetch=True)
     if (result["data"]): result["data"] = bool(result["data"][0][0])
